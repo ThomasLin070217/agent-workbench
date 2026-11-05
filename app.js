@@ -35,15 +35,15 @@ async function api(path,options){const response=await fetch(path,{...options,sig
 function renderSessions(){
   const query=$('search').value.trim().toLowerCase();
   $('session-count').textContent=sessions.length;
-  const visible=sessions.filter(s=>[s.agent,s.session_id,s.workspace,...s.tasks].join(' ').toLowerCase().includes(query));
-  $('sessions').innerHTML=visible.length?visible.map(s=>`<button class="session ${selected===s.key?'selected':''}" data-session="${esc(s.key)}"><strong>${esc(s.tasks[0] || '原生会话')}</strong><div class="row"><span>${agentName(s.agent)}</span><span>${statusNames[s.status]||'状态未知'}</span></div><small>${esc(s.session_id)}</small></button>`).join(''):`<p class="hint">${query?'没有匹配的会话':'还没有可接续的会话。Agent 完成首次原生调用后会显示在这里。'}</p>`;
+  const visible=sessions.filter(s=>[s.agent,s.session_id,s.workspace,s.project_id,s.task_title,...s.tasks].join(' ').toLowerCase().includes(query));
+  $('sessions').innerHTML=visible.length?visible.map(s=>`<button class="session ${selected===s.key?'selected':''}" data-session="${esc(s.key)}"><strong>${esc(s.task_title || s.tasks[0] || '原生会话')}</strong><div class="row"><span>${agentName(s.agent)}</span><span>${statusNames[s.status]||'状态未知'}</span></div><small>${esc(s.session_id)}</small></button>`).join(''):`<p class="hint">${query?'没有匹配的会话':'还没有可接续的会话。Agent 完成首次原生调用后会显示在这里。'}</p>`;
   const s=sessions.find(s=>s.key===selected);
   $('room-nav').classList.toggle('selected',!s);
   $('session-detail').hidden=!s;
   if(!s){$('title').textContent='协作 Room';$('subtitle').textContent='在这里协作，在原生应用中继续';return;}
-  $('title').textContent=agentName(s.agent);$('subtitle').textContent=s.tasks.join(' · ')||'原生会话';
+  $('title').textContent=agentName(s.agent);$('subtitle').textContent=[s.task_title,...s.tasks].filter(Boolean).join(' · ')||'原生会话';
   const allowed=s.href && (s.agent==='codex'?/^codex:\/\/threads\/[0-9a-f-]+$/.test(s.href):s.href==='dsh://open');
-  $('session-detail').innerHTML=`<div class="detail-top"><div><h2>继续这段对话</h2><p>打开已有会话，保留上下文。下方仍是 Room 协作消息。</p></div>${allowed?`<a class="open-native" href="${esc(s.href)}" ${s.agent==='codex'?'':`data-desktop-session="${esc(s.session_id)}"`}>在 ${s.agent==='codex'?'Codex':'DeepSeek 桌面端'}中打开</a>`:''}</div><div class="detail-meta"><code>${esc(s.session_id)}</code><button class="copy-id" data-copy="${esc(s.session_id)}">复制 ID</button></div>${s.open_reason?`<p class="detail-warning">${esc(s.open_reason)}</p>`:''}`;
+  $('session-detail').innerHTML=`<div class="detail-top"><div><h2>继续这段对话</h2><p>打开已有会话，保留上下文。下方仍是 Room 协作消息。</p></div>${allowed?`<a class="open-native" href="${esc(s.href)}" ${s.agent==='codex'?'':`data-desktop-session="${esc(s.session_id)}"`}>在 ${s.agent==='codex'?'Codex':'DeepSeek 桌面端'}中打开</a>`:''}</div>${s.workflow_status?`<p>${esc(s.workflow_status)}</p>`:''}${s.artifact_url && /^http:\/\/127\.0\.0\.1:[0-9]{1,5}\/?$/.test(s.artifact_url)?`<p><a href="${esc(s.artifact_url)}" target="_blank" rel="noopener noreferrer">打开交付页面</a></p>`:''}<p class="task-workspace">工作副本：<code>${esc(s.workspace)}</code></p><div class="detail-meta"><code>${esc(s.session_id)}</code><button class="copy-id" data-copy="${esc(s.session_id)}">复制 ID</button></div>${s.open_reason?`<p class="detail-warning">${esc(s.open_reason)}</p>`:''}`;
 }
 function renderMessages(){
   const all=[...messages.values()].sort((a,b)=>(a.sequence||0)-(b.sequence||0));

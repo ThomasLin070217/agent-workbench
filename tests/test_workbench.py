@@ -28,6 +28,11 @@ class Links(unittest.TestCase):
             self.assertIsNone(session_links.list_sessions([root])['items'][0]['href'])
             self.assertIsNone(session_links.list_sessions([root])['items'][1]['href'])
 
+    def test_artifact_is_local_and_token_free(self):
+        self.assertEqual(session_links.artifact_url('http://127.0.0.1:3010'), 'http://127.0.0.1:3010')
+        for value in ['javascript:alert(1)', 'https://example.com', 'http://user:pass@127.0.0.1:3010', 'http://127.0.0.1:3010/?token=secret', 'http://127.0.0.1:99999', None]:
+            self.assertIsNone(session_links.artifact_url(value))
+
     def test_invalid_ids_and_url_no_tokens(self):
         for url in ['https://example.com','http://127.0.0.1:3080/?token=secret','http://user:pass@localhost','file:///tmp','javascript:alert(1)']:
             with self.assertRaises(ValueError):session_links.deepseek_base(url)

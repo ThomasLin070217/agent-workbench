@@ -13,6 +13,17 @@ def deepseek_base(value):
         raise ValueError('DSH_WEB_URL must be a local HTTP origin without tokens or a path')
     return value.rstrip('/') + '/'
 
+def artifact_url(value):
+    if not isinstance(value, str):
+        return None
+    try:
+        p = urlparse(value)
+        if p.scheme == 'http' and p.hostname == '127.0.0.1' and p.port and 0 < p.port < 65536 and not p.username and not p.password and p.path in ('', '/') and not p.query and not p.fragment:
+            return value
+    except ValueError:
+        pass
+    return None
+
 def list_sessions(roots, dsh_url='', dsh_bridge=False):
     items, warnings, seen = [], [], set()
     base = ''  # Desktop handoff; no browser Web UI target.
@@ -38,6 +49,8 @@ def list_sessions(roots, dsh_url='', dsh_bridge=False):
                     'key': agent + ':' + sid, 'agent': agent, 'session_id': sid,
                     'tasks': [str(t) for t in record.get('tasks', [])] if isinstance(record.get('tasks', []), list) else [], 'workspace': record.get('workspace', ''),
                     'room_id': record.get('room_id'), 'status': record.get('status', 'unknown'),
+                    'project_id': record.get('project_id'), 'task_title': record.get('task_title'),
+                    'artifact_url': artifact_url(record.get('artifact_url')), 'workflow_status': record.get('workflow_status'),
                     'updated_at': float(record.get('updated_at', 0)), 'href': None if busy else href,
                     'open_reason': reason, 'link_basis': 'official' if agent == 'codex' else 'project-plugin',
                 })
