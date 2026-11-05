@@ -1,0 +1,20 @@
+# Local credentials and private runtime data
+agents.env
+.env
+.env.*
+*.env
+!.env.example
+.state/
+.sharednet/
+__pycache__/
+*.pyc
+**/node_modules/
+.DS_Store
+# Historical local acceptance records and screenshots
+GUI_DISPATCH.md
+NATIVE_GUI.md
+REVIEW.md
+viewer-screenshot.png
+.impeccable/
+dsh-session-link/cordis.patch.yml
+mcp-server/smoke-results.json

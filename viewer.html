@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SharedNet · 工作台</title><link rel="stylesheet" href="/style.css"><script src="/app.js" defer></script></head>
+<body>
+<aside id="sidebar">
+  <div class="brand"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h9a5 5 0 0 1 0 10H5m14 2h-9a5 5 0 0 1 0-10h9"/></svg><strong>SharedNet</strong><button id="close-nav" class="icon mobile" aria-label="关闭侧栏">×</button></div>
+  <button id="room-nav" class="nav selected"><span>协作 Room</span><span class="dot"></span></button>
+  <div class="section-label">原生会话 <span id="session-count"></span></div>
+  <input type="search" id="search" aria-label="搜索任务或会话" placeholder="搜索任务或会话…">
+  <div id="sessions" aria-live="polite"><p class="hint">正在读取会话…</p></div>
+  <div class="sidebar-bottom"><span class="small-dot"></span><span id="room-label">正在连接 Room</span><button id="refresh" class="icon" aria-label="刷新连接">↻</button></div>
+</aside>
+<div class="workspace">
+  <header><button id="menu" class="icon mobile" aria-label="打开侧栏">☰</button><div><h1 id="title">协作 Room</h1><p id="subtitle">在这里协作，在原生应用中继续</p></div><span id="connection" role="status">连接中</span></header>
+  <section id="session-detail" hidden aria-label="原生会话信息"></section>
+  <main id="log" aria-label="Room 消息"><div class="empty"><div class="empty-symbol">S</div><h2>让任务与上下文保持连贯</h2><p>选择左侧会话，在 Codex 或 DeepSeek 中继续。<br>Room 保留各 Agent 的协作消息。</p></div></main>
+  <button id="new-messages" hidden>查看新消息</button>
+  <div class="composer-wrap"><div id="notice" role="status" aria-live="polite"></div><form id="composer"><label class="sr-only" for="message">发送到 SharedNet Room</label><textarea id="message" rows="2" placeholder="给团队发消息，或 @codex / @deepseek 分配任务…" maxlength="16000"></textarea><div class="composer-actions"><label for="agent" class="sr-only">指定 Agent</label><select id="agent"><option value="">整个 Room</option value="codex">Codex</option><option value="deepseek">DeepSeek</option></select><span>Enter 发送 · Shift + Enter 换行</span><button id="send" type="submit" aria-label="发送消息"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></button></div></form><p class="footnote">发送成功表示已送达 Room；Agent 的实际进度以回复和会话状态为准。</p></div>
+</div>
+</body></html>

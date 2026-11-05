@@ -1,0 +1,11 @@
+{
+  "name": "sharednet-mcp-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "node server.mjs" },
+  "engines": { "node": ">=22.18.0" },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.32.2"
+  }
+}

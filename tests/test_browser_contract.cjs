@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs');const vm=require('node:vm');
+const {markdown}=require('../app.js');
+assert(!markdown('<img src=x onerror=alert(1)>').includes('<img'));
+assert(!markdown('[bad](javascript:alert(1))').includes('href='));
+assert(markdown('```html\n<script>alert(1)</script>\n```').includes('&lt;script&gt;'));
+assert(markdown('# Title\n- first\n- second').includes('<ul>'));
+let mod, calls=[], clean, request={id:'r1',session_id:'session-00000000-0000-4000-8000-000000000002'}, ack=[];
+const selection={getSnapshot:()=>({sessionId:calls.at(-1)})};
+const window={__ModuleLoader__:{load:x=>mod=x.factory()}};
+const fetch=async(url,options)=>options?.method==='POST'?(ack.push(JSON.parse(options.body)),{ok:true}):{ok:true,json:async()=>request};
+vm.runInNewContext(fs.readFileSync(require.resolve('../dsh-session-link/client.js'),'utf8'),{window,fetch,setTimeout:()=>0,clearTimeout:()=>{}});
+mod.apply({uiWorkspace:{openSession:id=>calls.push(id),selection},effect:fn=>clean=fn()});
+setImmediate(()=>{assert.deepEqual(calls,[request.session_id]);assert.equal(ack[0].status,'selected');clean();console.log('PASS: Markdown XSS escaping and desktop same-session selection acknowledgement');});
