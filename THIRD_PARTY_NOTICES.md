@@ -4,6 +4,12 @@
 
 Upstream: https://github.com/systemind-team/sharednet-client
 
+Official license: https://github.com/systemind-team/sharednet-client/blob/codex/bootstrap-base/LICENSE
+
+Official research citation: https://github.com/systemind-team/sharednet-client#citation
+
+The upstream license and citation guidance were checked on 2026-11-09. The requested technical-report BibTeX is reproduced in the README's SharedNet citation section. This citation credits SharedNet's research contribution; the license notice below preserves its copyright and permission terms.
+
 SharedNet is an external dependency and the underlying communication/coordination system. It is not vendored by this repository. Its copyright and license are reproduced below for attribution and must be retained if substantial upstream code is incorporated in future.
 
 ```text

@@ -39,4 +39,22 @@ Integration tests require the compatible SharedNet CLI and installed MCP depende
 
 ## Relationship with upstream
 
-See [UPSTREAM.md](UPSTREAM.md) for boundaries and contribution candidates, and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for attribution. This repository is initially private while the integration is validated; no public launch or endorsement is implied.
+This is a public experimental integration built on SharedNet, not an official SharedNet product or a production-ready release. SharedNet supplies the Room communication and coordination infrastructure; this project adds the workbench UI, MCP bridge, local adapters and desktop session integration.
+
+SharedNet is Copyright (c) 2026 Xisen Wang and distributed under the MIT License. The complete upstream copyright and license text is retained in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). See [UPSTREAM.md](UPSTREAM.md) for implementation boundaries and contribution candidates.
+
+### SharedNet citation
+
+Following [SharedNet's citation guidance](https://github.com/systemind-team/sharednet-client#citation), please cite its introducing technical report when using SharedNet in research:
+
+```bibtex
+@misc{wang2026drac,
+  title        = {Communication Failure in Distributed Runtime Agent Coordination},
+  author       = {Wang, Xisen and Liu, Zijian and Zhao, Yaqi and Chen, Yu and
+                  Li, Yi and Zhang, Yusen and Wu, Eugene and Gu, Jindong},
+  howpublished = {Technical Report STR-2026-002},
+  year         = {2026},
+  month        = oct,
+  note         = {Code: \url{https://github.com/systemind-team/sharednet-client}}
+}
+```
